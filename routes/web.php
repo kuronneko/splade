@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['splade'])->group(function () {
 
     Route::resource('users', UserController::class)->only('index');
-
+    Route::resource('posts', PostController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+    //Route::resource('posts', PostController::class)->only('index', 'create', 'store', 'edit', 'update');
     // Registers routes to support the interactive components...
     Route::spladeWithVueBridge();
 
