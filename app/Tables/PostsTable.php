@@ -52,6 +52,7 @@ class PostsTable extends AbstractTable
             ->column('id', sortable: true)
             ->column('name', sortable: true)
             ->column('content', sortable: true)
+            ->column('published_at', sortable: true)
             ->column('action')
             ->perPageOptions([10, 25, 50, 100])
             ->paginate();
