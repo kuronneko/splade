@@ -17,7 +17,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                 <x-splade-form :default="$post" method="PUT" :action="route('posts.update', $post)" class="space-y-4 max-w-md mx-auto p-4 bg-white rounded-md">
                     <x-splade-input name="name" label="Name" />
-                    <x-splade-input name="content" label="Content" />
+                    <x-splade-textarea name="content" label="Content" />
                     <x-splade-submit class="mt-4" />
                 </x-splade-form>
             </div>

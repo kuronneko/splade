@@ -8,6 +8,7 @@ use ProtoneMedia\Splade\AbstractForm;
 use ProtoneMedia\Splade\FormBuilder\Text;
 use ProtoneMedia\Splade\FormBuilder\Input;
 use ProtoneMedia\Splade\FormBuilder\Submit;
+use ProtoneMedia\Splade\FormBuilder\Textarea;
 
 class CreatePostForm extends AbstractForm
 {
@@ -26,7 +27,7 @@ class CreatePostForm extends AbstractForm
     {
         return [
             Input::make('name')->label('Name')->rules('required', 'max:255'),
-            Text::make('content')->label('Content')->rules('required', 'max:255'),
+            Textarea::make('content')->label('Content')->rules('required', 'max:255'),
             Submit::make()->label('Create'),
         ];
     }
