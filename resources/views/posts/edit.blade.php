@@ -19,6 +19,9 @@
                     <x-splade-input name="published_at" label="Date" date time/>
                     <x-splade-input name="name" label="Name" />
 
+                    <x-splade-select name="category_id" :options="$categories" label="Category">
+                    </x-splade-select>
+
                     <x-splade-file name="image" label="Image" filepond preview />
 
                     <x-splade-textarea name="content" label="Content" />

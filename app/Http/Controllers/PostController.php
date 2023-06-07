@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\View\View;
-use App\Tables\PostsTable;
 
+use App\Tables\PostsTable;
 use Illuminate\Http\Request;
 use App\Forms\CreatePostForm;
 use App\Services\ImageService;
@@ -33,6 +34,7 @@ class PostController extends Controller
         $validatedData = $form->validate($request);
 
         $post = new Post();
+        $post->category_id = $validatedData['category_id'];
         $post->name = $validatedData['name'];
         $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
@@ -56,6 +58,7 @@ class PostController extends Controller
     public function edit(Post $post): View{
         return view('posts.edit', [
             'post' => $post, // Pass the post object to the view
+            'categories' => Category::pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -63,6 +66,7 @@ class PostController extends Controller
     {
         $validatedData = $form->validate($request);
 
+        $post->category_id = $validatedData['category_id'];
         $post->name = $validatedData['name'];
         $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
