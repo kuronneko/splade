@@ -46,6 +46,10 @@ class PostController extends Controller
 
         //Post::create($validatedData);
 
+        Toast::title('Your post was created!')
+        ->autoDismiss(3)
+        ->centerTop();
+
         return redirect()->route('posts.index');
     }
 
