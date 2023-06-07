@@ -8,7 +8,9 @@ use App\Tables\PostsTable;
 
 use Illuminate\Http\Request;
 use App\Forms\CreatePostForm;
+use App\Services\ImageService;
 use ProtoneMedia\Splade\Facades\Toast;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -30,7 +32,19 @@ class PostController extends Controller
     {
         $validatedData = $form->validate($request);
 
-        Post::create($validatedData);
+        $post = new Post();
+        $post->name = $validatedData['name'];
+        $post->content = $validatedData['content'];
+        $post->published_at = $validatedData['published_at'];
+        if ($request->hasFile('image')) {
+            $imageUrl = ImageService::uploadImagen($request->file('image'));
+            if (!str_contains($imageUrl, 'error')) {
+                $post->image = $imageUrl;
+            }
+        }
+        $post->save();
+
+        //Post::create($validatedData);
 
         return redirect()->route('posts.index');
     }
@@ -45,7 +59,18 @@ class PostController extends Controller
     {
         $validatedData = $form->validate($request);
 
-        $post->update($validatedData);
+        $post->name = $validatedData['name'];
+        $post->content = $validatedData['content'];
+        $post->published_at = $validatedData['published_at'];
+        if ($request->hasFile('image')) {
+            $imageUrl = ImageService::uploadImagen($request->file('image'));
+            if (!str_contains($imageUrl, 'error')) {
+                $post->image = $imageUrl;
+            }
+        }
+        $post->update();
+
+        //$post->update($validatedData);
 
         Toast::title('Your post was updated!')
         ->autoDismiss(3)
@@ -55,6 +80,10 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post){
+        $filePath = 'public/images/' . basename($post->image);
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+        }
         $post->delete();
 
         Toast::title('Your post was deleted!')

@@ -14,6 +14,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <x-splade-table :for="$posts">
+                    @cell('preview', $post)
+                    <div class="w-12 h-12">
+                        <img src="{{$post->image}}" alt="" class="w-full h-full object-cover rounded-md">
+                    </div>
+                    @endcell
                     @cell('action', $post)
                     <Link href="{{route('posts.edit', $post->id)}}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-500">

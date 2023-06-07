@@ -18,6 +18,9 @@
                 <x-splade-form :default="$post" method="PUT" :action="route('posts.update', $post)" class="space-y-4 max-w-md mx-auto p-4 bg-white rounded-md">
                     <x-splade-input name="published_at" label="Date" date time/>
                     <x-splade-input name="name" label="Name" />
+
+                    <x-splade-file name="image" label="Image" filepond preview />
+
                     <x-splade-textarea name="content" label="Content" />
                     <x-splade-submit class="mt-4" />
                 </x-splade-form>

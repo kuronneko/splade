@@ -50,8 +50,9 @@ class PostsTable extends AbstractTable
         $table
             ->withGlobalSearch(columns: ['id', 'name', 'content'])
             ->column('id', sortable: true)
+            ->column('preview')
             ->column('name', sortable: true)
-            ->column('content', sortable: true)
+            //->column('content', sortable: true)
             ->column('published_at', sortable: true)
             ->column('action')
             ->perPageOptions([10, 25, 50, 100])
