@@ -50,7 +50,7 @@ class PostController extends Controller
 
         Toast::title('Your post was created!')
         ->autoDismiss(3)
-        ->centerTop();
+        ->centerBottom();
 
         return redirect()->route('posts.index');
     }
@@ -82,7 +82,7 @@ class PostController extends Controller
 
         Toast::title('Your post was updated!')
         ->autoDismiss(3)
-        ->centerTop();
+        ->centerBottom();
 
         return redirect()->route('posts.index');
     }
@@ -96,7 +96,7 @@ class PostController extends Controller
 
         Toast::title('Your post was deleted!')
         ->autoDismiss(3)
-        ->centerTop();
+        ->centerBottom();
 
         return redirect()->route('posts.index');
     }
