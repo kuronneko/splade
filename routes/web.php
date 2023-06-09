@@ -44,7 +44,6 @@ Route::middleware(['splade'])->group(function () {
 
             // Splade componentes demo
             Route::resource('posts', PostController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
-            Route::resource('users', UserController::class)->only('index');
 
             Route::view('/dashboard', 'dashboard')->name('dashboard');
 

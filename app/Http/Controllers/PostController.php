@@ -16,18 +16,19 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index(): View{
+    public function index(): View
+    {
         return view('posts.index', [
             'posts' => PostsTable::class
         ]);
     }
 
-    public function create(): View{
+    public function create(): View
+    {
         $form = CreatePostForm::make();
         return view('posts.create', [
             'form' => $form,
         ]);
-
     }
 
     public function store(Request $request, CreatePostForm $form)
@@ -60,7 +61,8 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function edit(Post $post): View{
+    public function edit(Post $post): View
+    {
         return view('posts.edit', [
             'post' => $post, // Pass the post object to the view
             'categories' => Category::pluck('name', 'id')->toArray(),
@@ -98,7 +100,8 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function destroy(Post $post){
+    public function destroy(Post $post)
+    {
         $filePath = 'public/images/' . basename($post->image);
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
