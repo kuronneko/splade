@@ -103,6 +103,9 @@ class PostController extends Controller
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
         }
+
+        $post->tags()->detach();
+
         $post->delete();
 
         Toast::title('Your post was deleted!')
