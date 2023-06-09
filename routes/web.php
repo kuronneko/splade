@@ -18,9 +18,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['splade'])->group(function () {
 
-    Route::resource('users', UserController::class)->only('index');
-    Route::resource('posts', PostController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
-    //Route::resource('posts', PostController::class)->only('index', 'create', 'store', 'edit', 'update');
     // Registers routes to support the interactive components...
     Route::spladeWithVueBridge();
 
@@ -42,11 +39,15 @@ Route::middleware(['splade'])->group(function () {
         ]);
     });
 
-    Route::middleware([
-        'auth:sanctum',
-        config('jetstream.auth_session'),
-        'verified',
-    ])->group(function () {
-        Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
+        Route::prefix('admin')->group(function () {
+
+            // Splade componentes demo
+            Route::resource('posts', PostController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+            Route::resource('users', UserController::class)->only('index');
+
+            Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+        });
     });
 });
