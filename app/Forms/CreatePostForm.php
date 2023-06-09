@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\SpladeForm;
@@ -32,16 +33,38 @@ class CreatePostForm extends AbstractForm
     {
 
         return [
-            Datetime::make('published_at')->label('Date')->required(),
-            Input::make('name')->label('Name')->rules('required', 'max:255'),
-            Select::make('category_id')->label('Category')->options(Category::pluck('name', 'id')->toArray())->required(),
+            Datetime::make('published_at')
+            ->label('Date')
+            ->required(),
+
+            Input::make('name')
+            ->label('Name')
+            ->rules('required', 'max:255'),
+
+            Select::make('category_id')
+            ->label('Category')
+            ->options(Category::pluck('name', 'id')->toArray())
+            ->required(),
+
+            Select::make('tags[]')
+            ->label('Tags')
+            ->required()
+            ->options(Tag::pluck('name', 'id')->toArray())
+            ->multiple()    // Enables choosing multiple options
+            ->choices(),    // Enables the Choices.js integration
+
             File::make('image')
             ->filepond()
             //->server()   // Enables asynchronous uploads of files
             ->preview()  // Show image preview
             ->maxSize('10Mb')
-            ->label('Image')->required(),
-            Textarea::make('content')->label('Content')->rules('required', 'max:255'),
+            ->label('Image')
+            ->required(),
+
+            Textarea::make('content')
+            ->label('Content')
+            ->rules('required', 'max:255'),
+
             Submit::make()->label('Create'),
         ];
     }

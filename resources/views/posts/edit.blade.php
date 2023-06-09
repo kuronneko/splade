@@ -17,14 +17,17 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                 <x-splade-form :default="$post" method="PUT" :action="route('posts.update', $post)" class="space-y-4 max-w-md mx-auto p-4 bg-white rounded-md">
                     <x-splade-input name="published_at" label="Date" date time/>
+
                     <x-splade-input name="name" label="Name" />
 
-                    <x-splade-select name="category_id" :options="$categories" label="Category">
-                    </x-splade-select>
+                    <x-splade-select name="category_id" :options="$categories" label="Category" />
+
+                    <x-splade-select name="tags[]" :options="$tags" multiple relation choices label="Tags" />
 
                     <x-splade-file name="image" label="Image" filepond preview />
 
                     <x-splade-textarea name="content" label="Content" />
+
                     <x-splade-submit class="mt-4" />
                 </x-splade-form>
             </div>

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Category;
-use Illuminate\View\View;
 
+use Illuminate\View\View;
 use App\Tables\PostsTable;
 use Illuminate\Http\Request;
 use App\Forms\CreatePostForm;
@@ -38,13 +39,17 @@ class PostController extends Controller
         $post->name = $validatedData['name'];
         $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
+
         if ($request->hasFile('image')) {
             $imageUrl = ImageService::uploadImagen($request->file('image'));
             if (!str_contains($imageUrl, 'error')) {
                 $post->image = $imageUrl;
             }
         }
+
         $post->save();
+
+        $post->tags()->attach($request->input('tags'));
 
         //Post::create($validatedData);
 
@@ -59,6 +64,7 @@ class PostController extends Controller
         return view('posts.edit', [
             'post' => $post, // Pass the post object to the view
             'categories' => Category::pluck('name', 'id')->toArray(),
+            'tags' => Tag::pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -70,13 +76,18 @@ class PostController extends Controller
         $post->name = $validatedData['name'];
         $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
+
         if ($request->hasFile('image')) {
             $imageUrl = ImageService::uploadImagen($request->file('image'));
             if (!str_contains($imageUrl, 'error')) {
                 $post->image = $imageUrl;
             }
         }
+
         $post->update();
+
+        $post->tags()->detach();
+        $post->tags()->attach($request->input('tags'));
 
         //$post->update($validatedData);
 

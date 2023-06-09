@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
@@ -27,5 +28,25 @@ class DatabaseSeeder extends Seeder
         Category::create([
             'name' => 'Livewire'
         ]);
+
+        Tag::create([
+            'name' => 'Red'
+        ]);
+        Tag::create([
+            'name' => 'Blue'
+        ]);
+        Tag::create([
+            'name' => 'Green'
+        ]);
+        Tag::create([
+            'name' => 'Yellow'
+        ]);
+        Tag::create([
+            'name' => 'Black'
+        ]);
+        Tag::create([
+            'name' => 'White'
+        ]);
+
     }
 }

@@ -209,7 +209,7 @@
                                   </svg>
                                 <div class="flex-1 ml-3 whitespace-nowrap">
                                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index', 'posts.create', 'posts.edit')">
-                                        {{ __('Posts') }}
+                                        {{ __('Posts [DEMO]') }}
                                     </x-nav-link>
                                 </div>
                             </a>
@@ -387,7 +387,7 @@
                           </svg>
                         <div class="flex-1 ml-3 whitespace-nowrap">
                             <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index', 'posts.create', 'posts.edit')">
-                                {{ __('Posts') }}
+                                {{ __('Posts [DEMO]') }}
                             </x-nav-link>
                         </div>
                     </a>
