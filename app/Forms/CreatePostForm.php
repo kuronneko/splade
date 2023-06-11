@@ -43,23 +43,23 @@ class CreatePostForm extends AbstractForm
 
             Select::make('category_id')
             ->label('Category')
-            ->options(Category::pluck('name', 'id')->toArray())
+            ->options(Category::pluck('name', 'id')->toArray()) /* El selector simple, se carga con un Array cuyo contenido es el "id" y "name" de la entidad Category */
             ->required(),
 
             Select::make('tags[]')
             ->label('Tags')
-            ->required()
-            ->options(Tag::pluck('name', 'id')->toArray())
-            ->multiple()    // Enables choosing multiple options
-            ->choices(),    // Enables the Choices.js integration
+            ->options(Tag::pluck('name', 'id')->toArray()) /* El selector multiple, se carga con un Array cuyo contenido es el "id" y "name" de la entidad Tag */
+            ->multiple() /* Convierte el selector simple a un selector multiple */
+            ->choices() /* Librería para facilitar la selección de los elementos */
+            ->required(),
 
             File::make('image')
-            ->filepond()
-            //->server()   // Enables asynchronous uploads of files
-            ->preview()  // Show image preview
+            ->label('Single Image')
+            ->filepond() /* Utiliza la libreria filepond para crear un file input más bakán */
+            ->preview() /* Genera una preview de la imagen adjunta */
             ->maxSize('10Mb')
-            ->label('Image')
-            ->required(),
+            ->required()
+            ->accept(['image/png', 'image/jpeg']),
 
             Textarea::make('content')
             ->label('Content')

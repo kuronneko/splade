@@ -8,14 +8,14 @@ use Intervention\Image\ImageManagerStatic;
 
 class ImageService
 {
-    public static function creacionVerificacionCarpetas()
+    public static function createFolders($folderName)
     {
         try {
-            //verificación y o creación de la carpeta para las imagenes basadas en el nombre de la pagina, utilizando su slug
-            if (!file_exists(public_path('/storage/images'))) {
-                mkdir(public_path('/storage/images'), 0755, true);
+/*             Verificación y o creación de la carpeta para las imagenes */
+            if (!file_exists(public_path('storage/' . $folderName))) {
+                mkdir(public_path('storage/' . $folderName), 0755, true);
                 return true;
-            } elseif (file_exists(public_path('/storage/images'))) {
+            } elseif (file_exists(public_path('storage/' . $folderName))) {
                 return true;
             } else {
                 return false;
@@ -25,22 +25,18 @@ class ImageService
         }
     }
 
-    public static function uploadImagen($img)
+    public static function uploadImagen($image, $folderName)
     {
         try {
-            //verificar el archivo y la carpeta contenedora
-            if ($img) {
-                //nombre del archivo formateado a md5
-                $imgNewfileName = md5($img->getClientOriginalName());
-
-                //guardar la imagen en el storage
-                $imgRenderized = ImageManagerStatic::make($img->getRealPath())->resize(720, null, function ($constraint) { //resize image based on width
-                    $constraint->aspectRatio();
-                })->resizeCanvas(720, null);
-
-                $imgRenderized->save(public_path('/storage/images/' . '/' . $imgNewfileName . '.' . $img->getClientOriginalExtension()), 100);
-                //ruta referencial
-                return Storage::url('public/images/' . '/' . $imgNewfileName . '.' . $img->getClientOriginalExtension());
+/*                 Verificar el archivo y la carpeta contenedora */
+            if ($image && self::createFolders($folderName)) {
+/*                 Nombre del archivo formateado a md5 */
+                $imageNewfileName = md5($image->getClientOriginalName());
+/*                 Guardar la imagen en el storage */
+                $imageRenderized = ImageManagerStatic::make($image->getRealPath());
+                $imageRenderized->save(public_path('storage/' . $folderName .  '/' . $imageNewfileName . '.' . $image->getClientOriginalExtension()), 100);
+/*                 Ruta referencial */
+                return Storage::url('public/' . $folderName . '/' . $imageNewfileName . '.' . $image->getClientOriginalExtension());
             }
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()]);

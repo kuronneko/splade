@@ -10,21 +10,26 @@ use Illuminate\View\View;
 use App\Tables\PostsTable;
 use Illuminate\Http\Request;
 use App\Forms\CreatePostForm;
+use App\Forms\EditPostForm;
 use App\Services\ImageService;
 use ProtoneMedia\Splade\Facades\Toast;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\EditPostFormRequest;
+use App\Http\Requests\CreatePostFormRequest;
 
 class PostController extends Controller
 {
     public function index(): View
     {
         return view('posts.index', [
+/*      En PostsTable se encuentra la query para poder renderizar la tabla. */
             'posts' => PostsTable::class
         ]);
     }
 
     public function create(): View
     {
+/*      Se genera un formulario utilizando el form builder de splade. */
         $form = CreatePostForm::make();
         return view('posts.create', [
             'form' => $form,
@@ -41,22 +46,15 @@ class PostController extends Controller
         $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
 
-        if ($request->hasFile('image')) {
-            $imageUrl = ImageService::uploadImagen($request->file('image'));
-            if (!str_contains($imageUrl, 'error')) {
-                $post->image = $imageUrl;
-            }
-        }
+        $post->image = ImageService::uploadImagen($validatedData['image'], 'images');
 
         $post->save();
 
-        $post->tags()->attach($request->input('tags'));
-
-        //Post::create($validatedData);
+        $post->tags()->attach($validatedData['tags']);
 
         Toast::title('Your post was created!')
         ->autoDismiss(3)
-        ->centerBottom();
+        ->center();
 
         return redirect()->route('posts.index');
     }
@@ -64,23 +62,26 @@ class PostController extends Controller
     public function edit(Post $post): View
     {
         return view('posts.edit', [
-            'post' => $post, // Pass the post object to the view
+            'post' => $post,
             'categories' => Category::pluck('name', 'id')->toArray(),
             'tags' => Tag::pluck('name', 'id')->toArray(),
         ]);
     }
 
-    public function update(Request $request, Post $post, CreatePostForm $form)
+    public function update(EditPostFormRequest $request, Post $post)
     {
-        $validatedData = $form->validate($request);
+/*      El formulario de edición no fue generado utilizando el Form Builder de Splade, sino con las etiquetas que este proporciona (<x-splade-form />).
+        De esta forma se puede validar la información utilizando los métodos convencionales de Laravel (EditPostFormRequest). */
+        $validatedData = $request->validated();
 
         $post->category_id = $validatedData['category_id'];
         $post->name = $validatedData['name'];
         $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
 
-        if ($request->hasFile('image')) {
-            $imageUrl = ImageService::uploadImagen($request->file('image'));
+/* Ignora las imagenes "blob" generadas para el preview del editar. También en caso de retornar desde "uploadImagen" con algún error, no se hará el registro */
+        if ($validatedData['image']->getClientOriginalName() != 'blob') {
+            $imageUrl = ImageService::uploadImagen($validatedData['image'], 'images');
             if (!str_contains($imageUrl, 'error')) {
                 $post->image = $imageUrl;
             }
@@ -89,13 +90,11 @@ class PostController extends Controller
         $post->update();
 
         $post->tags()->detach();
-        $post->tags()->attach($request->input('tags'));
-
-        //$post->update($validatedData);
+        $post->tags()->attach($validatedData['tags']);
 
         Toast::title('Your post was updated!')
         ->autoDismiss(3)
-        ->centerBottom();
+        ->center();
 
         return redirect()->route('posts.index');
     }

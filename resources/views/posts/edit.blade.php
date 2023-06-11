@@ -28,7 +28,7 @@
 
                     <x-splade-textarea name="content" label="Content" />
 
-                    <x-splade-submit class="mt-4" />
+                    <x-splade-submit class="mt-4" label="Edit"/>
                 </x-splade-form>
             </div>
         </div>
