@@ -41,11 +41,12 @@ class PostController extends Controller
         $validatedData = $form->validate($request);
 
         $post = new Post();
-        $post->category_id = $validatedData['category_id'];
-        $post->name = $validatedData['name'];
-        $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
-
+        $post->name = $validatedData['name'];
+        $post->category_id = $validatedData['category_id'];
+        $post->content = $validatedData['content'];
+        $post->position = $validatedData['position'];
+        $post->visible = $request->visible;
         $post->image = ImageService::uploadImagen($validatedData['image'], 'images');
 
         $post->save();
@@ -74,10 +75,12 @@ class PostController extends Controller
         De esta forma se puede validar la información utilizando los métodos convencionales de Laravel (EditPostFormRequest). */
         $validatedData = $request->validated();
 
-        $post->category_id = $validatedData['category_id'];
-        $post->name = $validatedData['name'];
-        $post->content = $validatedData['content'];
         $post->published_at = $validatedData['published_at'];
+        $post->name = $validatedData['name'];
+        $post->category_id = $validatedData['category_id'];
+        $post->content = $validatedData['content'];
+        $post->position = $validatedData['position'];
+        $post->visible = $request->visible;
 
 /* Ignora las imagenes "blob" generadas para el preview del editar. También en caso de retornar desde "uploadImagen" con algún error, no se hará el registro */
         if ($validatedData['image']->getClientOriginalName() != 'blob') {

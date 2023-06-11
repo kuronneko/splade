@@ -29,6 +29,7 @@ class EditPostFormRequest extends FormRequest
         return [
             'published_at' => 'required',
             'name' => 'required|max:255',
+            'position' => 'required|numeric|max:999999999',
             'category_id' => 'required',
             'tags' => 'required|array',
             'tags.*' => 'required',

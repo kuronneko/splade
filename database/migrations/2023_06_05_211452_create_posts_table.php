@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('image');
             $table->text('content');
+            $table->integer('position');
+            $table->boolean('visible')->default(1);
             $table->dateTime('published_at')->useCurrent();
             $table->timestamps();
         });
