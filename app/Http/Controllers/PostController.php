@@ -47,7 +47,7 @@ class PostController extends Controller
         $post->content = $validatedData['content'];
         $post->position = $validatedData['position'];
         $post->visible = $request->visible;
-        $post->image = ImageService::uploadImagen($validatedData['image'], 'images');
+        $post->image = ImageService::uploadImagen($validatedData['image'], 'posts');
 
         $post->save();
 
@@ -84,7 +84,7 @@ class PostController extends Controller
 
 /* Ignora las imagenes "blob" generadas para el preview del editar. También en caso de retornar desde "uploadImagen" con algún error, no se hará el registro */
         if ($validatedData['image']->getClientOriginalName() != 'blob') {
-            $imageUrl = ImageService::uploadImagen($validatedData['image'], 'images');
+            $imageUrl = ImageService::uploadImagen($validatedData['image'], 'posts');
             if (!str_contains($imageUrl, 'error')) {
                 $post->image = $imageUrl;
             }
