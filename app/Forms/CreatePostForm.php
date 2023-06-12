@@ -63,6 +63,14 @@ class CreatePostForm extends AbstractForm
             ->required()
             ->accept(['image/png', 'image/jpeg']),
 
+            File::make('images[]')
+            ->label('Images (Multiple file component)')
+            ->filepond() /* Utiliza la libreria filepond para crear un file input más bakán */
+            ->preview() /* Genera una preview de la imagen adjunta */
+            ->multiple()
+            ->maxSize('10Mb')
+            ->required(),
+
             Textarea::make('content')
             ->label('Content (Text area component)')
             ->rules('required', 'max:255'),

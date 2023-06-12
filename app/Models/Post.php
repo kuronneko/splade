@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name', 'content', 'published_at', 'image'];
 
     public function category(){
@@ -16,5 +17,10 @@ class Post extends Model
 
     public function tags(){
         return $this->belongsToMany(Tag::class)->withPivot('post_id', 'tag_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
     }
 }

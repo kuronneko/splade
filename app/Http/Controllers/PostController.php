@@ -16,6 +16,7 @@ use ProtoneMedia\Splade\Facades\Toast;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\EditPostFormRequest;
 use App\Http\Requests\CreatePostFormRequest;
+use App\Models\Image;
 
 class PostController extends Controller
 {
@@ -53,6 +54,13 @@ class PostController extends Controller
 
         $post->tags()->attach($validatedData['tags']);
 
+        foreach ($request->images as $imageData) {
+            $image = new Image();
+            $image->post_id = $post->id;
+            $image->url = ImageService::uploadImagen($imageData, 'posts/gallery');
+            $image->save();
+        }
+
         Toast::title('Your post was created!')
         ->autoDismiss(3)
         ->center();
@@ -66,6 +74,7 @@ class PostController extends Controller
             'post' => $post,
             'categories' => Category::pluck('name', 'id')->toArray(),
             'tags' => Tag::pluck('name', 'id')->toArray(),
+            'images' => Image::where('post_id', $post->id)->get()->pluck('id', 'url')->toArray(),
         ]);
     }
 
