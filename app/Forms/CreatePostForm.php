@@ -7,16 +7,18 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\SpladeForm;
 use ProtoneMedia\Splade\AbstractForm;
-use ProtoneMedia\Splade\FormBuilder\Checkbox;
 use ProtoneMedia\Splade\FormBuilder\Date;
 use ProtoneMedia\Splade\FormBuilder\File;
 use ProtoneMedia\Splade\FormBuilder\Text;
 use ProtoneMedia\Splade\FormBuilder\Input;
+use ProtoneMedia\Splade\FormBuilder\Number;
+use ProtoneMedia\Splade\FormBuilder\Radios;
 use ProtoneMedia\Splade\FormBuilder\Select;
 use ProtoneMedia\Splade\FormBuilder\Submit;
+use ProtoneMedia\Splade\FormBuilder\Checkbox;
 use ProtoneMedia\Splade\FormBuilder\Datetime;
-use ProtoneMedia\Splade\FormBuilder\Number;
 use ProtoneMedia\Splade\FormBuilder\Textarea;
+use ProtoneMedia\Splade\FormBuilder\Checkboxes;
 
 class CreatePostForm extends AbstractForm
 {
@@ -55,6 +57,11 @@ class CreatePostForm extends AbstractForm
             ->choices() /* Librería para facilitar la selección de los elementos */
             ->required(),
 
+            Checkboxes::make('tags')
+            ->label('Tags (Multiple checkboxes component)')
+            ->options(Tag::pluck('name', 'id')->toArray())
+            ->required(),
+
             File::make('image')
             ->label('Image (Single file component)')
             ->filepond() /* Utiliza la libreria filepond para crear un file input más bakán */
@@ -76,6 +83,15 @@ class CreatePostForm extends AbstractForm
             Checkbox::make('visible')
             ->label('Visible (Single checkbox component)')
             ->value(1),
+
+            Radios::make('visible')
+            ->label('Visible (Radio group component)')
+            ->options([
+                '1' => 'Visible',
+                '0' => 'Hidden',
+            ])
+            ->inline()
+            ->required(),
 
             Submit::make()->label('Create'),
         ];

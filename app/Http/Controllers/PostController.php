@@ -115,7 +115,7 @@ class PostController extends Controller
 
         Toast::title('Your post was deleted!')
         ->autoDismiss(3)
-        ->centerBottom();
+        ->center();
 
         return redirect()->route('posts.index');
     }

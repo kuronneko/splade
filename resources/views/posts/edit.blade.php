@@ -24,6 +24,8 @@
 
                     <x-splade-select name="tags[]" :options="$tags" multiple relation choices label="Tags (Multiple select component)" />
 
+                    <x-splade-checkboxes name="tags" :options="$tags" relation label="Tags (Multiple checkboxes component)"/>
+
                     <x-splade-file name="image" label="Image (Single file component)" filepond preview />
 
                     <x-splade-textarea name="content" label="Content (Text area component)" />
@@ -31,6 +33,11 @@
                     <x-splade-input name="position" label="Position (Number component)" type="number"/>
 
                     <x-splade-checkbox name="visible" value="1" false-value="0" label="Visible (Single checkbox component)" />
+
+                    <x-splade-group name="visible" label="Visible (Visible radio group component)" inline>
+                        <x-splade-radio name="visible" value="1" label="Visible" />
+                        <x-splade-radio name="visible" value="0" label="Hidden" />
+                    </x-splade-group>
 
                     <x-splade-submit class="mt-4" label="Edit"/>
                 </x-splade-form>
