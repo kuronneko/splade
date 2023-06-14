@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tables;
+namespace App\Tables\Posts;
 
 use App\Models\Post;
 use Illuminate\Http\Request;

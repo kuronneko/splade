@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Forms;
+namespace App\Forms\Posts;
 
 use App\Models\Tag;
 use App\Models\Category;

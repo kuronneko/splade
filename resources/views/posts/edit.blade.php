@@ -34,7 +34,7 @@
 
                     <x-splade-checkbox name="visible" value="1" false-value="0" label="Visible (Single checkbox component)" />
 
-                    <x-splade-group name="visible" label="Visible (Visible radio group component)" inline>
+                    <x-splade-group name="visible" label="Visible (Radio group component)" inline>
                         <x-splade-radio name="visible" value="1" label="Visible" />
                         <x-splade-radio name="visible" value="0" label="Hidden" />
                     </x-splade-group>
