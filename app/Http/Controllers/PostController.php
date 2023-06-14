@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use App\Models\Post;
-use App\Models\Category;
+use App\Models\Team;
 
+use App\Models\Category;
 use Illuminate\View\View;
-use App\Tables\PostsTable;
-use Illuminate\Http\Request;
-use App\Forms\CreatePostForm;
+
 use App\Forms\EditPostForm;
+use Illuminate\Http\Request;
 use App\Services\ImageService;
+use App\Tables\Posts\PostsTable;
+use App\Forms\Posts\CreatePostForm;
+use Illuminate\Support\Facades\Auth;
 use ProtoneMedia\Splade\Facades\Toast;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\EditPostFormRequest;
@@ -19,8 +22,22 @@ use App\Http\Requests\CreatePostFormRequest;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+/*         $this->middleware(function (Request $request, $next) {
+            $user = auth()->user();
+            if (auth()->user()->hasTeamRole(auth()->user()->currentTeam, 'admin')) {
+                return $next($request);
+            }else{
+                abort(401);
+            }
+        }); */
+    }
+
     public function index(): View
     {
+        !auth()->user()->hasTeamPermission(auth()->user()->currentTeam, 'read') || auth()->user()->currentTeam->name !== 'Admin Team' ? abort(401) : null;
+
         return view('posts.index', [
 /*      En PostsTable se encuentra la query para poder renderizar la tabla. */
             'posts' => PostsTable::class
@@ -38,6 +55,8 @@ class PostController extends Controller
 
     public function store(Request $request, CreatePostForm $form)
     {
+        !auth()->user()->hasTeamPermission(auth()->user()->currentTeam, 'create') || auth()->user()->currentTeam->name !== 'Admin Team' ? abort(401) : null;
+
         $validatedData = $form->validate($request);
 
         $post = new Post();
@@ -71,6 +90,8 @@ class PostController extends Controller
 
     public function update(EditPostFormRequest $request, Post $post)
     {
+        !auth()->user()->hasTeamPermission(auth()->user()->currentTeam, 'update') || auth()->user()->currentTeam->name !== 'Admin Team' ? abort(401) : null;
+
 /*      El formulario de edición no fue generado utilizando el Form Builder de Splade, sino con las etiquetas que este proporciona (<x-splade-form />).
         De esta forma se puede validar la información utilizando los métodos convencionales de Laravel (EditPostFormRequest). */
         $validatedData = $request->validated();
@@ -104,6 +125,8 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        !auth()->user()->hasTeamPermission(auth()->user()->currentTeam, 'delete') || auth()->user()->currentTeam->name !== 'Admin Team' ? abort(401) : null;
+
         $filePath = 'public/images/' . basename($post->image);
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
