@@ -7,9 +7,9 @@ use App\Models\Post;
 use App\Models\Category;
 
 use Illuminate\View\View;
-use App\Tables\PostsTable;
+use App\Tables\Posts\PostsTable;
 use Illuminate\Http\Request;
-use App\Forms\CreatePostForm;
+use App\Forms\Posts\CreatePostForm;
 use App\Forms\EditPostForm;
 use App\Services\ImageService;
 use ProtoneMedia\Splade\Facades\Toast;
